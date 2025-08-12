@@ -74,16 +74,16 @@ export default function Dashboard() {
   const recentConversations = conversations?.slice(0, 3) || [];
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6 pt-16 lg:pt-6">
       {/* Header */}
-      <header className="mb-8">
-        <div className="flex items-center justify-between">
+      <header className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard Overview</h1>
             <p className="text-gray-600 mt-1">Monitor your AI companion performance and revenue</p>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-start sm:justify-end space-x-4">
             <div className="flex items-center space-x-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span>AI Active</span>
@@ -93,7 +93,7 @@ export default function Dashboard() {
       </header>
 
       {/* Key Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         <MetricCard
           title="Total Revenue"
           value={`$${metrics?.totalRevenue?.toLocaleString() || '0'}`}
@@ -132,7 +132,7 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         
         {/* AI Persona Status */}
         <Card>

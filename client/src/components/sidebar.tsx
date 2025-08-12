@@ -1,84 +1,118 @@
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { 
-  LayoutDashboard, 
-  User, 
-  MessageCircle, 
-  Archive, 
-  Users, 
-  CreditCard, 
-  Shield, 
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  LayoutDashboard,
+  User,
+  MessageSquare,
+  FileImage,
+  Users,
+  CreditCard,
+  Shield,
   BarChart3,
-  MoreHorizontal 
+  Settings,
+  Menu,
+  X
 } from "lucide-react";
 
-const navigationItems = [
-  { path: "/", label: "Dashboard", icon: LayoutDashboard },
-  { path: "/persona", label: "AI Persona", icon: User },
-  { path: "/conversations", label: "Conversations", icon: MessageCircle },
-  { path: "/content", label: "Content Library", icon: Archive },
-  { path: "/fans", label: "Fans & Users", icon: Users },
-  { path: "/payments", label: "Revenue & Payments", icon: CreditCard },
-  { path: "/safety", label: "Safety & Moderation", icon: Shield },
-  { path: "/analytics", label: "Analytics", icon: BarChart3 },
+const navigation = [
+  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "AI Persona", href: "/persona", icon: User },
+  { name: "Conversations", href: "/conversations", icon: MessageSquare },
+  { name: "Content Library", href: "/content", icon: FileImage },
+  { name: "Fan Management", href: "/fans", icon: Users },
+  { name: "Payments", href: "/payments", icon: CreditCard },
+  { name: "Safety & Moderation", href: "/safety", icon: Shield },
+  { name: "Analytics", href: "/analytics", icon: BarChart3 },
+  { name: "Settings", href: "/settings", icon: Settings },
 ];
 
-export default function Sidebar() {
+function SidebarContent({ onClose }: { onClose?: () => void }) {
   const [location] = useLocation();
 
   return (
-    <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg border-r border-gray-200">
-      <div className="flex h-full flex-col">
-        {/* Logo and Brand */}
-        <div className="flex h-16 items-center px-6 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">AI</span>
-            </div>
-            <span className="text-xl font-semibold text-gray-900">CompanionHub</span>
+    <div className="flex h-full flex-col bg-white border-r border-gray-200">
+      <div className="flex h-16 items-center justify-between px-6 border-b border-gray-200">
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">AI</span>
           </div>
+          <span className="font-bold text-lg text-gray-900">Companion</span>
         </div>
-        
-        {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-2">
-          {navigationItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location === item.path;
-            
-            return (
-              <Link 
-                key={item.path} 
-                href={item.path}
-                className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  isActive 
-                    ? 'bg-primary/10 text-primary border-r-2 border-primary' 
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
+        {onClose && (
+          <Button variant="ghost" size="sm" onClick={onClose} className="lg:hidden">
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      
+      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        {navigation.map((item) => {
+          const isActive = location === item.href || 
+            (item.href !== "/" && location.startsWith(item.href));
+          
+          return (
+            <Link key={item.name} href={item.href}>
+              <Button
+                variant={isActive ? "default" : "ghost"}
+                className={cn(
+                  "w-full justify-start text-left h-11",
+                  isActive && "bg-primary text-primary-foreground"
+                )}
+                onClick={onClose}
               >
-                <Icon className="w-5 h-5 mr-3" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-        
-        {/* User Profile */}
-        <div className="border-t border-gray-200 p-4">
-          <div className="flex items-center space-x-3">
-            <img 
-              src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&h=150" 
-              alt="Creator profile" 
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">Sarah Chen</p>
-              <p className="text-xs text-gray-500 truncate">@sarahcreates</p>
-            </div>
-            <button className="text-gray-400 hover:text-gray-600">
-              <MoreHorizontal className="w-5 h-5" />
-            </button>
+                <item.icon className="mr-3 h-4 w-4" />
+                {item.name}
+              </Button>
+            </Link>
+          );
+        })}
+      </nav>
+      
+      <div className="border-t border-gray-200 p-4">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+            <span className="text-gray-600 text-sm font-medium">U</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 truncate">Creator</p>
+            <p className="text-xs text-gray-500 truncate">@creator_123</p>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Sidebar() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      {/* Mobile sidebar */}
+      <div className="lg:hidden">
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="fixed top-4 left-4 z-50 bg-white border border-gray-200 shadow-sm"
+            >
+              <Menu className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-64">
+            <SidebarContent onClose={() => setOpen(false)} />
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Desktop sidebar */}
+      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+        <SidebarContent />
+      </div>
+    </>
   );
 }

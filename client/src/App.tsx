@@ -11,6 +11,7 @@ import Fans from "@/pages/fans";
 import Payments from "@/pages/payments";
 import Safety from "@/pages/safety";
 import Analytics from "@/pages/analytics";
+import Settings from "@/pages/settings";
 import NotFound from "@/pages/not-found";
 import Sidebar from "@/components/sidebar";
 
@@ -18,7 +19,7 @@ function Router() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Sidebar />
-      <div className="pl-64">
+      <div className="lg:pl-64">
         <Switch>
           <Route path="/" component={Dashboard} />
           <Route path="/persona" component={Persona} />
@@ -28,6 +29,7 @@ function Router() {
           <Route path="/payments" component={Payments} />
           <Route path="/safety" component={Safety} />
           <Route path="/analytics" component={Analytics} />
+          <Route path="/settings" component={Settings} />
           <Route component={NotFound} />
         </Switch>
       </div>
